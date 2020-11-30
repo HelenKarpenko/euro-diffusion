@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-namespace EuroDiffusion
+﻿namespace EuroDiffusion
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+	using System.Text.RegularExpressions;
+
 	class Country
 	{
 		public string Name { get; set; }
@@ -19,15 +19,14 @@ namespace EuroDiffusion
 		{
 			get
 			{
-				if (!_isCompleted && Cities.All(x => x.IsCompleted))
+				if (!_isCompleted && 
+					(Cities.All(x => x.IsCompleted) || DayOfCompletion != -1))
 					_isCompleted = true;
 
 				return _isCompleted;
 			}
 		}
 		private bool _isCompleted;
-
-		
 
 		private const int _maxNameLength = 25;
 		private const int _minSize = 1;
@@ -40,10 +39,10 @@ namespace EuroDiffusion
 				throw new ArgumentException($"Invalid country name: {name}. The country name must be no more than {_maxNameLength} characters and contain only letters.");
 
 			if (xl > xh || yl > yh)
-				throw new ArgumentException($"Invalid country coordinates: xl={xl}, xh={xh}, yl={yl}, yh={yh}");
+				throw new ArgumentException($"Invalid country coordinates: xl={xl}, xh={xh}, yl={yl}, yh={yh}.");
 
 			if (new List<int> { xl, yl, xh, yh}.Any(x => x < _minSize || x > _maxSize))
-				throw new ArgumentException($"Invalid country coordinates: xl={xl}, xh={xh}, yl={yl}, yh={yh}");
+				throw new ArgumentException($"Invalid country coordinates: xl={xl}, xh={xh}, yl={yl}, yh={yh}.");
 
 			Name = name;
 			XL = xl;

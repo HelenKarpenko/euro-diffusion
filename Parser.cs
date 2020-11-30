@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-namespace EuroDiffusion
+﻿namespace EuroDiffusion
 {
+	using System;
+	using System.Collections.Generic;
+	using System.IO;
+	using System.Linq;
+
 	class Parser
 	{
 		private const string _defaultInputFilePath = @"C:\Users\lena\source\repos\EuroDiffusion\EuroDiffusion\TestData\input.txt";
@@ -17,7 +16,6 @@ namespace EuroDiffusion
 			var result = new List<List<Country>>();
 
 			var input = ReadFile(filePath);
-
 
 			var lineIndex = 0;
 			while (lineIndex < input.Count) 
@@ -66,7 +64,7 @@ namespace EuroDiffusion
 		{
 			var args = line.Split(" ");
 			if (args.Length != 5)
-				throw new ArgumentException($"Error at line {line}. Invalid number of params.");
+				throw new ArgumentException($"Invalid number of params.");
 
 			var name = args[0];
 			var xl = int.Parse(args[1]);

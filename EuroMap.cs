@@ -1,39 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EuroDiffusion
+﻿namespace EuroDiffusion
 {
+	using System;
+	using System.Collections.Generic;
+	using System.Linq;
+
 	class EuroMap
 	{
 		public List<Country> Countries;
 
 		private const int _length = 10;
 		private const int _width = 10;
-		private City[,] _cities = new City[_length + 2, _width + 2];
+		private readonly City[,] _cities = new City[_length + 2, _width + 2];
 
 		public EuroMap(List<Country> countries)
 		{
 			Countries = countries;
 			InitializeMap(countries);
 			ValidateForeignNeighbours();
-
-			for (var x = 0; x < _cities.GetLength(0); x++)
-			{
-				for (var y = 0; y < _cities.GetLength(1); y++)
-				{
-					if (_cities[x, y] != null)
-						Console.Write($"x ");
-					else
-						Console.Write($". ");
-				}
-				Console.WriteLine();
-			}
 		}
 
 		public void SimulateEuroDiffusion()
 		{
-			var day = 0;
+			if (Countries.Count == 1)
+			{
+				Countries.First().DayOfCompletion = 0;
+				return;
+			}
+
+			var day = 1;
 			var areAllCountriesCompleted = false;
 
 			while (!areAllCountriesCompleted)
@@ -41,7 +35,6 @@ namespace EuroDiffusion
 				TransferCoinsToNeighbours();
 
 				FinalizeBalancePerDay();
-
 
 				areAllCountriesCompleted = true;
 				foreach (var country in Countries)
@@ -59,39 +52,19 @@ namespace EuroDiffusion
 
 		private void TransferCoinsToNeighbours()
 		{
-			for (var x = 0; x < _cities.GetLength(0); x++)
+			foreach (var city in _cities)
 			{
-				for (var y = 0; y < _cities.GetLength(1); y++)
-				{
-					if (_cities[x, y] != null)
-					{
-						var city = _cities[x, y];
-						city.TransferCoinsToNeighbours();
-					}
-				}
+				city?.TransferCoinsToNeighbours();
 			}
 		}
 
 		private void FinalizeBalancePerDay()
 		{
-			for (var x = 0; x < _cities.GetLength(0); x++)
+			foreach (var city in _cities)
 			{
-				for (var y = 0; y < _cities.GetLength(1); y++)
-				{
-					if (_cities[x, y] != null)
-					{
-						var city = _cities[x, y];
-						city.FinalizeBalancePerDay();
-					}
-				}
+				city?.FinalizeBalancePerDay();
 			}
 		}
-
-
-
-		
-
-		
 
 		private void InitializeMap(List<Country> countries)
 		{
@@ -100,7 +73,6 @@ namespace EuroDiffusion
 				AddCountryToMap(country);
 				SetNeighbours();
 			}
-		
 		}
 
 		private void AddCountryToMap(Country country)
@@ -110,7 +82,7 @@ namespace EuroDiffusion
 				for (var y = country.YL; y <= country.YH; y++)
 				{
 					if (_cities[x, y] != null)
-						throw new ArgumentException($"{country.Name} intersects with {_cities[x, y]} on [{x}, {y}]");
+						throw new ArgumentException($"{country.Name} intersects with {_cities[x, y].Country.Name} on [{x}, {y}].");
 
 					var city = new City(country, x, y, Countries);
 					_cities[x, y] = city;
@@ -121,16 +93,12 @@ namespace EuroDiffusion
 
 		private void SetNeighbours()
 		{
-			for (var x = 1; x < _cities.GetLength(0); x++)
+			foreach (var city in _cities)
 			{
-				for (var y = 1; y < _cities.GetLength(1); y++)
+				if (city != null)
 				{
-					if (_cities[x, y] != null)
-					{
-						var city = _cities[x, y];
-						var neighbours = GetNeighbours(x, y);
-						city.Neighbours = neighbours; 
-					}
+					var neighbours = GetNeighbours(city.X, city.Y);
+					city.Neighbours = neighbours;
 				}
 			}
 		}
@@ -161,9 +129,8 @@ namespace EuroDiffusion
 			foreach (var country in Countries)
 			{
 				if (!country.HasForeignNeighbours())
-					throw new ArgumentException($"{country.Name} hasn't foreign neighbours");
+					throw new ArgumentException($"{country.Name} hasn't foreign neighbours.");
 			}
-		
 		}
 	}
 }

@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace EuroDiffusion
+﻿namespace EuroDiffusion
 {
-	class Program
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
+    class Program
 	{
 		static void Main(string[] args)
 		{
             Parser parser = new Parser();
 
-            List<List<Country>> res = null;
+            List<List<Country>> testCases;
             try
             {
-                 res = parser.ParseInputFile();
+                testCases = parser.ParseInputFile();
             }
             catch (Exception e)
             {
@@ -21,17 +22,18 @@ namespace EuroDiffusion
             }
 
             int caseNumber = 1;
-            foreach (var caseToSolve in res)
+            foreach (var testCase in testCases)
             {
                 Console.WriteLine($"Case Number {caseNumber++}");
                 try
                 {
-                    var map = new EuroMap(caseToSolve);
-                    map.SimulateEuroDiffusion();
+                    var euroMap = new EuroMap(testCase);
+                    euroMap.SimulateEuroDiffusion();
 
-                    foreach (var country in map.Countries)
+                    var countries = euroMap.Countries.OrderBy(x => x.DayOfCompletion).ThenBy(x => x.Name);
+                    foreach (var country in countries)
                     {
-                        Console.WriteLine($"{country.Name}: {country.DayOfCompletion}");
+                        Console.WriteLine($"{country.Name} {country.DayOfCompletion}");
                     }
                 }
                 catch (Exception e)

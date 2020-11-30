@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace EuroDiffusion
+﻿namespace EuroDiffusion
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     class City
     {
         public Country Country { get; set; }
@@ -39,8 +39,6 @@ namespace EuroDiffusion
         }
         private bool _isCompleted;
 
-        
-
         public City(Country country, int x, int y, List<Country> countryCoins)
         {
             Country = country;
@@ -54,13 +52,13 @@ namespace EuroDiffusion
 
         public void TransferCoinsToNeighbours() 
         {
-            foreach (var neighbour in Neighbours) 
+            foreach (var motif in Balance.Keys.ToList())
             {
-                foreach (var motif in Balance.Keys.ToList()) 
+                var amountToTransfer = Balance[motif] / _representativePortion;
+                if (amountToTransfer > 0)
                 {
-                    if (Balance[motif] > _representativePortion)
+                    foreach (var neighbour in Neighbours)
                     {
-                        var amountToTransfer = Balance[motif] / _representativePortion;
                         neighbour.BalancePerDay[motif] += amountToTransfer;
                         Balance[motif] -= amountToTransfer;
                     }
