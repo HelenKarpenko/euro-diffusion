@@ -13,9 +13,6 @@
         public Dictionary<string, int> Balance = new Dictionary<string, int>();
         public Dictionary<string, int> BalancePerDay = new Dictionary<string, int>();
 
-        private const int _initialCityBalance = 1_000_000;
-        private const int _representativePortion = 1_000;
-
         public bool IsCompleted
         {
             get
@@ -35,6 +32,9 @@
                 return _isCompleted;
             }
         }
+
+        private const int _initialCityBalance = 1_000_000;
+        private const int _representativePortion = 1_000;
         private bool _isCompleted;
 
         public City(Country country, int x, int y, List<Country> countryCoins)
