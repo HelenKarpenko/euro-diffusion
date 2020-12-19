@@ -15,19 +15,6 @@
 		public List<City> Cities = new List<City>();
 		public int DayOfCompletion { get; set; }
 
-		public bool IsCompleted
-		{
-			get
-			{
-				if (!_isCompleted && 
-					(Cities.All(x => x.IsCompleted) || DayOfCompletion != -1))
-					_isCompleted = true;
-
-				return _isCompleted;
-			}
-		}
-		private bool _isCompleted;
-
 		public Country(string name, int xl, int yl, int xh, int yh)
 		{
 			var namePattern = $"[A-Z][a-z]{{1,{Constants.MAX_NAME_LENGTH}}}$";
@@ -37,7 +24,7 @@
 			if (xl > xh || yl > yh)
 				throw new ArgumentException($"Invalid country coordinates: xl={xl}, xh={xh}, yl={yl}, yh={yh}.");
 
-			if (new List<int> { xl, yl, xh, yh}.Any(x => x < Constants.MIN_SIZE || x > Constants.MAX_SIZE))
+			if (new List<int> { xl, yl, xh, yh }.Any(x => x < Constants.MIN_SIZE || x > Constants.MAX_SIZE))
 				throw new ArgumentException($"Invalid country coordinates: xl={xl}, xh={xh}, yl={yl}, yh={yh}.");
 
 			Name = name;
@@ -48,17 +35,22 @@
 			DayOfCompletion = -1;
 		}
 
-		public bool HasForeignNeighbours() 
+		public bool HasForeignNeighbours()
 		{
 			foreach (var city in Cities)
 			{
-				foreach (var neighbours in city.Neighbours) 
+				foreach (var neighbours in city.Neighbours)
 				{
 					if (neighbours.Country != this) return true;
 				}
 			}
 
 			return false;
+		}
+
+		public bool IsCompleted(List<string> allMotif)
+		{
+			return Cities.All(x => x.IsCompleted(allMotif) || DayOfCompletion != -1);
 		}
 	}
 }

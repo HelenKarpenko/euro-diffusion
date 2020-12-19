@@ -13,40 +13,16 @@
         public Dictionary<string, int> Balance = new Dictionary<string, int>();
         public Dictionary<string, int> BalancePerDay = new Dictionary<string, int>();
 
-        public bool IsCompleted
-        {
-            get
-            {
-                if (_isCompleted) 
-                    return true;
-
-                foreach (var motif in Balance.Keys.ToList())
-                {
-                    if (Balance[motif] == 0)
-                    {
-                        return false;
-                    }
-                }
-
-                _isCompleted = true;
-                return _isCompleted;
-            }
-        }
-
-        private bool _isCompleted;
-
-        public City(Country country, int x, int y, List<Country> countryCoins)
+        public City(Country country, int x, int y)
         {
             Country = country;
             X = x;
             Y = y;
 
-            Balance = countryCoins.ToDictionary(x => x.Name, x => 0);
-            BalancePerDay = countryCoins.ToDictionary(x => x.Name, x => 0);
             Balance[country.Name] = Constants.INITIAL_CITY_BALANCE;
         }
 
-        public void TransferCoinsToNeighbours() 
+        public void TransferCoinsToNeighbours()
         {
             foreach (var motif in Balance.Keys.ToList())
             {
@@ -55,7 +31,7 @@
                 {
                     foreach (var neighbour in Neighbours)
                     {
-                        neighbour.BalancePerDay[motif] += amountToTransfer;
+                        neighbour.TransferMoneyPerDay(motif, amountToTransfer);
                         Balance[motif] -= amountToTransfer;
                     }
                 }
@@ -66,9 +42,26 @@
         {
             foreach (var motif in BalancePerDay.Keys.ToList())
             {
-                Balance[motif] += BalancePerDay[motif];
+                if (!Balance.Keys.Contains(motif))
+                    Balance.Add(motif, BalancePerDay[motif]);
+                else
+                    Balance[motif] += BalancePerDay[motif];
+
                 BalancePerDay[motif] = 0;
             }
+        }
+
+        public void TransferMoneyPerDay(string motif, int amountToTransfer)
+        {
+            if (!BalancePerDay.Keys.Contains(motif))
+                BalancePerDay.Add(motif, amountToTransfer);
+            else
+                BalancePerDay[motif] += amountToTransfer;
+        }
+
+        public bool IsCompleted(List<string> allMotif)
+        {
+            return allMotif.Any() && allMotif.All(key => Balance.ContainsKey(key));
         }
     }
 }

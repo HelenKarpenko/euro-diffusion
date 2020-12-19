@@ -27,6 +27,7 @@
 
 			var day = 1;
 			var areAllCountriesCompleted = false;
+			var allMotif = Countries.Select(x => x.Name).ToList();
 
 			while (!areAllCountriesCompleted)
 			{
@@ -37,10 +38,10 @@
 				areAllCountriesCompleted = true;
 				foreach (var country in Countries)
 				{
-					if (country.IsCompleted && country.DayOfCompletion < 0)
+					if (country.IsCompleted(allMotif) && country.DayOfCompletion < 0)
 						country.DayOfCompletion = day;
-					
-					if (!country.IsCompleted)
+
+					if (!country.IsCompleted(allMotif))
 						areAllCountriesCompleted = false;
 				}
 
@@ -82,7 +83,7 @@
 					if (_cities[x, y] != null)
 						throw new ArgumentException($"{country.Name} intersects with {_cities[x, y].Country.Name} on [{x}, {y}].");
 
-					var city = new City(country, x, y, Countries);
+					var city = new City(country, x, y);
 					_cities[x, y] = city;
 					country.Cities.Add(city);
 				}
@@ -94,7 +95,7 @@
 			foreach (var city in _cities)
 			{
 				if (city != null)
-				{ 
+				{
 					city.Neighbours = GetNeighbours(city.X, city.Y);
 				}
 			}

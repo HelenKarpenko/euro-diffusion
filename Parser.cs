@@ -14,7 +14,7 @@
 			var input = ReadFile(filePath);
 
 			var lineIndex = 0;
-			while (lineIndex < input.Count) 
+			while (lineIndex < input.Count)
 			{
 				var trimmedLine = input[lineIndex].Trim();
 				if (!trimmedLine.All(char.IsDigit))
@@ -30,7 +30,7 @@
 				lineIndex++;
 
 				var countries = new List<Country>();
-				for (int i = 0; i < numberOfCountries; i++) 
+				for (int i = 0; i < numberOfCountries; i++)
 				{
 					var country = ParseCountry(input[lineIndex]);
 					countries.Add(country);
@@ -56,7 +56,7 @@
 			return result;
 		}
 
-		private Country ParseCountry(string line) 
+		private Country ParseCountry(string line)
 		{
 			var args = line.Split(" ");
 			if (args.Length != 5)
