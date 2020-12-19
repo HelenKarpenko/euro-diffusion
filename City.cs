@@ -27,8 +27,7 @@
                 {
                     if (Balance[motif] == 0)
                     {
-                        _isCompleted = false;
-                        return _isCompleted;
+                        return false;
                     }
                 }
 
