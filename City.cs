@@ -33,8 +33,6 @@
             }
         }
 
-        private const int _initialCityBalance = 1_000_000;
-        private const int _representativePortion = 1_000;
         private bool _isCompleted;
 
         public City(Country country, int x, int y, List<Country> countryCoins)
@@ -45,14 +43,14 @@
 
             Balance = countryCoins.ToDictionary(x => x.Name, x => 0);
             BalancePerDay = countryCoins.ToDictionary(x => x.Name, x => 0);
-            Balance[country.Name] = _initialCityBalance;
+            Balance[country.Name] = Constants.INITIAL_CITY_BALANCE;
         }
 
         public void TransferCoinsToNeighbours() 
         {
             foreach (var motif in Balance.Keys.ToList())
             {
-                var amountToTransfer = Balance[motif] / _representativePortion;
+                var amountToTransfer = Balance[motif] / Constants.REPRESENTATIVE_PORTION;
                 if (amountToTransfer > 0)
                 {
                     foreach (var neighbour in Neighbours)

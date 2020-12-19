@@ -28,20 +28,16 @@
 		}
 		private bool _isCompleted;
 
-		private const int _maxNameLength = 25;
-		private const int _minSize = 1;
-		private const int _maxSize = 10;
-
 		public Country(string name, int xl, int yl, int xh, int yh)
 		{
-			var namePattern = $"[A-Z][a-z]{{1,{_maxNameLength}}}$";
+			var namePattern = $"[A-Z][a-z]{{1,{Constants.MAX_NAME_LENGTH}}}$";
 			if (!Regex.IsMatch(name, namePattern))
-				throw new ArgumentException($"Invalid country name: {name}. The country name must be no more than {_maxNameLength} characters and contain only letters.");
+				throw new ArgumentException($"Invalid country name: {name}. The country name must be no more than {Constants.MAX_NAME_LENGTH} characters and contain only letters.");
 
 			if (xl > xh || yl > yh)
 				throw new ArgumentException($"Invalid country coordinates: xl={xl}, xh={xh}, yl={yl}, yh={yh}.");
 
-			if (new List<int> { xl, yl, xh, yh}.Any(x => x < _minSize || x > _maxSize))
+			if (new List<int> { xl, yl, xh, yh}.Any(x => x < Constants.MIN_SIZE || x > Constants.MAX_SIZE))
 				throw new ArgumentException($"Invalid country coordinates: xl={xl}, xh={xh}, yl={yl}, yh={yh}.");
 
 			Name = name;

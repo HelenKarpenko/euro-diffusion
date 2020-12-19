@@ -8,9 +8,7 @@
 	{
 		public List<Country> Countries;
 
-		private const int _length = 10;
-		private const int _width = 10;
-		private readonly City[,] _cities = new City[_length + 2, _width + 2];
+		private readonly City[,] _cities = new City[Constants.LENGTH + 2, Constants.WIDTH + 2];
 
 		public EuroMap(List<Country> countries)
 		{

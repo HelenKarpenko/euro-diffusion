@@ -7,11 +7,7 @@
 
 	class Parser
 	{
-		private const string _defaultInputFilePath = @"C:\Users\lena\source\repos\EuroDiffusion\EuroDiffusion\TestData\input.txt";
-		private const int _maxCountriesAmount = 20;
-		private const int _minCountriesAmount = 1;
-
-		public List<List<Country>> ParseInputFile(string filePath = _defaultInputFilePath)
+		public List<List<Country>> ParseInputFile(string filePath = Constants.DEFAULT_INPUT_FILE_PATH)
 		{
 			var result = new List<List<Country>>();
 
@@ -28,7 +24,7 @@
 				if (numberOfCountries == 0)
 					return result;
 
-				if(numberOfCountries > _maxCountriesAmount || numberOfCountries < _minCountriesAmount)
+				if(numberOfCountries > Constants.MAX_COUNTRIES_AMOUNT || numberOfCountries < Constants.MIN_COUNTRIES_AMOUNT)
 					throw new ArgumentException($"Invalid amount of countries: {numberOfCountries}.");
 
 				lineIndex++;
