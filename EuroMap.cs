@@ -96,9 +96,8 @@
 			foreach (var city in _cities)
 			{
 				if (city != null)
-				{
-					var neighbours = GetNeighbours(city.X, city.Y);
-					city.Neighbours = neighbours;
+				{ 
+					city.Neighbours = GetNeighbours(city.X, city.Y);
 				}
 			}
 		}
