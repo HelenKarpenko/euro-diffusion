@@ -20,20 +20,19 @@
         {
             get
             {
-                if (!_isCompleted)
-                {
-                    foreach (var motif in Balance.Keys.ToList())
-                    {
-                        if (Balance[motif] == 0)
-                        {
-                            _isCompleted = false;
-                            return _isCompleted;
-                        }
-                    }
+                if (_isCompleted) 
+                    return true;
 
-                    _isCompleted = true;
+                foreach (var motif in Balance.Keys.ToList())
+                {
+                    if (Balance[motif] == 0)
+                    {
+                        _isCompleted = false;
+                        return _isCompleted;
+                    }
                 }
 
+                _isCompleted = true;
                 return _isCompleted;
             }
         }
